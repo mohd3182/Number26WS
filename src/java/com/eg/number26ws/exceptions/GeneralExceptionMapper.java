@@ -24,10 +24,10 @@ public class GeneralExceptionMapper implements ExceptionMapper<Throwable>{
 
     @Override
     public Response toResponse(Throwable e) {
-           ErrorMessage errorResponse = new ErrorMessage();
+        ErrorMessage errorResponse = new ErrorMessage();
         errorResponse.setErrNo(400);
         errorResponse.setErrMessage(e.getMessage());
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(
-                errorResponse).type(MediaType.APPLICATION_XML).build();}
+                errorResponse).type(MediaType.APPLICATION_JSON).build();}
     
 }
