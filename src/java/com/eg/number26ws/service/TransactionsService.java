@@ -7,7 +7,9 @@ package com.eg.number26ws.service;
 
 import com.eg.number26ws.db.Database;
 import com.eg.number26ws.dto.DtoDoubleClass;
+import com.eg.number26ws.exceptions.NegativeValueException;
 import com.eg.number26ws.exceptions.ParentTransactionNotFoundException;
+import com.eg.number26ws.exceptions.RequiredFieldEmptyException;
 import com.eg.number26ws.exceptions.TransactionNotFoundException;
 import com.eg.number26ws.model.Transaction;
 import java.util.ArrayList;
@@ -39,6 +41,20 @@ public class TransactionsService {
          * *check Parent Key is exists*
          */
         transaction.setTransactionId(transactionId);
+        
+        if(transaction.getTransactionId()<0){
+        throw new NegativeValueException("Transaction Id is Negative Value");
+        }
+        
+        if(transaction.getAmount()<0){
+        throw new NegativeValueException("Amount is Negative Value");
+        }
+        
+        if(transaction.getType()==null || transaction.getType().equalsIgnoreCase("")){
+        throw new RequiredFieldEmptyException("Reuired Field (Type) is Empty");
+        }
+        
+        
         long parnetId = transaction.getParentId();
         if (parnetId != 0 && !Database.getTransactions().containsKey(parnetId)) {
             throw new ParentTransactionNotFoundException("the parent key :" + parnetId + " not found");
